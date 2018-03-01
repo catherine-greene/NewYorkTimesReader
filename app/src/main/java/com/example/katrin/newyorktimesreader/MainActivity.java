@@ -27,43 +27,6 @@ public class MainActivity extends AppCompatActivity {
 
         TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
-
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
-                switch (tab.getPosition()) {
-                    case 0:
-                        MostEmailedFragment mostEmailedFragment = new MostEmailedFragment();
-                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_most_emailed, mostEmailedFragment).commit();
-                        break;
-                    case 1:
-                        MostSharedFragment mostSharedFragment = new MostSharedFragment();
-                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_most_shared, mostSharedFragment).commit();
-
-                        break;
-                    case 2:
-                        MostViewedFragment mostViewedFragment = new MostViewedFragment();
-                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_most_viewed, mostViewedFragment).commit();
-
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-
-
     }
 }
 
