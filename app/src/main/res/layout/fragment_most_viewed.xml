@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment_most_viewed"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#D81B60">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="@string/fragment_three"
-        android:textColor="#fff"
-        android:textSize="40sp"
-        android:textStyle="bold" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/most_viewed_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 
 </RelativeLayout>

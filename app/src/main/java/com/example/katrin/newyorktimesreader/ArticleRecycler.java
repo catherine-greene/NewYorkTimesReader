@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 public class ArticleRecycler extends RecyclerView.Adapter<ArticleRecycler.ViewHolder> {
@@ -44,10 +46,9 @@ public class ArticleRecycler extends RecyclerView.Adapter<ArticleRecycler.ViewHo
 
         Article article = articleList.get(position);
 
-//        Picasso.with(context)
-//                .load(article.getImageUrl())
-//                .centerCrop()
-//                .into(holder.imageView);
+        Picasso.with(context)
+                .load(article.getImageUrl())
+                .into(holder.imageView);
         holder.title.setText(article.getTitle());
         holder.byline.setText(article.getByLine());
         holder.publishedDate.setText(article.getPublished_date());
@@ -74,7 +75,7 @@ public class ArticleRecycler extends RecyclerView.Adapter<ArticleRecycler.ViewHo
 
         ViewHolder(View itemView) {
             super(itemView);
-            imageView = itemView.findViewById(R.id.thumbnail);
+            imageView = itemView.findViewById(R.id.image);
             title = itemView.findViewById(R.id.title);
             byline = itemView.findViewById(R.id.byline);
             publishedDate = itemView.findViewById(R.id.published_date);

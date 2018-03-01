@@ -26,7 +26,7 @@ public class ArticlesStore implements GetArticlesTask.OnTaskResponse {
     }
 
     static List<Article> getSharedList(ArticleRecycler recycler) {
-        ourInstance.viewedRecycler = recycler;
+        ourInstance.sharedRecycler = recycler;
         return ourInstance.sharedList;
     }
 
