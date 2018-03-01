@@ -46,9 +46,13 @@ public class ArticleRecycler extends RecyclerView.Adapter<ArticleRecycler.ViewHo
 
         Article article = articleList.get(position);
 
-        Picasso.with(context)
-                .load(article.getImageUrl())
-                .into(holder.imageView);
+        if (article.getImageUrl() == null) {
+            holder.imageView.setVisibility(View.GONE);
+        } else {
+            Picasso.with(context)
+                    .load(article.getImageUrl())
+                    .into(holder.imageView);
+        }
         holder.title.setText(article.getTitle());
         holder.byline.setText(article.getByLine());
         holder.publishedDate.setText(article.getPublished_date());
