@@ -2,6 +2,7 @@ package com.example.katrin.newyorktimesreader;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import java.util.List;
 
 public class ArticleRecycler extends RecyclerView.Adapter<ArticleRecycler.ViewHolder> {
 
+    static final String FULL_TEXT_URL = "Full text url";
     private List<Article> articleList;
     private Context context;
 
@@ -42,9 +44,9 @@ public class ArticleRecycler extends RecyclerView.Adapter<ArticleRecycler.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
 
-        Article article = articleList.get(position);
+        final Article article = articleList.get(position);
 
         if (article.getImageUrl() == null) {
             holder.imageView.setVisibility(View.GONE);
@@ -57,6 +59,17 @@ public class ArticleRecycler extends RecyclerView.Adapter<ArticleRecycler.ViewHo
         holder.byline.setText(article.getByLine());
         holder.publishedDate.setText(article.getPublished_date());
         holder.abstractText.setText(article.getAbstractText());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(view.getContext(), FullTextActivity.class);
+                intent.putExtra(FULL_TEXT_URL, article.getFullTextUrl());
+                context.startActivity(intent);
+
+            }
+        });
 
     }
 

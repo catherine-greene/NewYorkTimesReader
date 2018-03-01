@@ -20,6 +20,10 @@ public class Article {
         this.imageUrl = imageUrl;
     }
 
+    String getFullTextUrl() {
+        return fullTextUrl;
+    }
+
     public String getSection() {
         return section;
     }
