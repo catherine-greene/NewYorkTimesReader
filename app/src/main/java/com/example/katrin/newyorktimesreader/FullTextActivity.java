@@ -7,7 +7,13 @@ import android.view.MenuItem;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.example.katrin.newyorktimesreader.SQLite.FavoritesRepository;
+
 public class FullTextActivity extends AppCompatActivity {
+
+    private boolean favCheck = false;
+    private Article article;
+    private FavoritesRepository repository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,11 +22,19 @@ public class FullTextActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+
         WebView webView = findViewById(R.id.web_view);
-        String url = getIntent().getStringExtra(ArticleRecycler.FULL_TEXT_URL);
+        article = (Article) getIntent().getSerializableExtra("article");
         webView.setWebViewClient(new WebViewClient());
         webView.setClickable(false);
-        webView.loadUrl(url);
+        webView.loadUrl(article.getFullTextUrl());
+
+        repository = new FavoritesRepository();
+        repository.open(this);
+        if (repository.findById(article.getFullTextUrl()) != null) {
+            favCheck = true;
+        }
+        invalidateOptionsMenu();
     }
 
     @Override
@@ -30,10 +44,33 @@ public class FullTextActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+
+        MenuItem menuItem = menu.findItem(R.id.add_to_fav);
+
+        if (favCheck) {
+            menuItem.setIcon(R.drawable.favorites_icon);
+        } else {
+            menuItem.setIcon(android.R.drawable.btn_star_big_off);
+        }
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         switch (item.getItemId()) {
             case R.id.add_to_fav:
 
+                if (favCheck) {
+                    favCheck = false;
+                    repository.delete(article);
+                } else {
+                    favCheck = true;
+                    repository.add(article);
+                }
+                invalidateOptionsMenu();
                 break;
             default:
                 return super.onOptionsItemSelected(item);
@@ -41,4 +78,9 @@ public class FullTextActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    protected void onDestroy() {
+        repository.close();
+        super.onDestroy();
+    }
 }

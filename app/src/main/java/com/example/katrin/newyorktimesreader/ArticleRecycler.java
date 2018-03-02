@@ -35,6 +35,11 @@ public class ArticleRecycler extends RecyclerView.Adapter<ArticleRecycler.ViewHo
         this.context = context;
     }
 
+    ArticleRecycler(Context context, List<Article> articleList) {
+        this.articleList = articleList;
+        this.context = context;
+    }
+
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -65,7 +70,8 @@ public class ArticleRecycler extends RecyclerView.Adapter<ArticleRecycler.ViewHo
             public void onClick(View view) {
 
                 Intent intent = new Intent(view.getContext(), FullTextActivity.class);
-                intent.putExtra(FULL_TEXT_URL, article.getFullTextUrl());
+                intent.putExtra("article", article);
+//                intent.putExtra(FULL_TEXT_URL, article.getFullTextUrl());
                 context.startActivity(intent);
 
             }

@@ -85,7 +85,6 @@ public class GetArticlesTask extends AsyncTask<GetArticlesTask.Category, Void, P
 
                 JSONObject object = results.getJSONObject(i);
                 String fullTextUrl = object.getString("url");
-                String section = object.getString("section");
                 String byLine = object.getString("byline");
                 String title = object.getString("title");
                 String abstractText = object.getString("abstract");
@@ -118,7 +117,7 @@ public class GetArticlesTask extends AsyncTask<GetArticlesTask.Category, Void, P
                     }
                 }
 
-                Article article = new Article(fullTextUrl, section, byLine, title, abstractText, publishedDate, imageUrl);
+                Article article = new Article(fullTextUrl, byLine, title, abstractText, publishedDate, imageUrl);
                 articleList.add(article);
 
             }

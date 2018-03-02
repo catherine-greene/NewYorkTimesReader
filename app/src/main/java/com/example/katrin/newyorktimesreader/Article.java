@@ -1,18 +1,18 @@
 package com.example.katrin.newyorktimesreader;
 
-public class Article {
+import java.io.Serializable;
+
+public class Article implements Serializable {
 
     private String fullTextUrl;
-    private String section;
     private String byLine;
     private String title;
     private String abstractText;
     private String published_date;
     private String imageUrl;
 
-    Article(String fullTextUrl, String section, String byLine, String title, String abstractText, String published_date, String imageUrl) {
+    public Article(String fullTextUrl, String byLine, String title, String abstractText, String published_date, String imageUrl) {
         this.fullTextUrl = fullTextUrl;
-        this.section = section;
         this.byLine = byLine;
         this.title = title;
         this.abstractText = abstractText;
@@ -20,15 +20,12 @@ public class Article {
         this.imageUrl = imageUrl;
     }
 
-    String getFullTextUrl() {
+    public String getFullTextUrl() {
         return fullTextUrl;
     }
 
-    public String getSection() {
-        return section;
-    }
 
-    String getByLine() {
+    public String getByLine() {
         return byLine;
     }
 
@@ -36,15 +33,15 @@ public class Article {
         return title;
     }
 
-    String getAbstractText() {
+    public String getAbstractText() {
         return abstractText;
     }
 
-    String getPublished_date() {
+    public String getPublished_date() {
         return published_date;
     }
 
-    String getImageUrl() {
+    public String getImageUrl() {
         return imageUrl;
     }
 
