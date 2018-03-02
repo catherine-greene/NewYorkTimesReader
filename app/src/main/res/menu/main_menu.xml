@@ -2,6 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/sync"
+        android:icon="@drawable/sync_butt"
+        android:title="@string/sync"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/fav"
         android:title="@string/favorites"
         app:showAsAction="ifRoom" />

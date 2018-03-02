@@ -64,7 +64,6 @@ public class GetArticlesTask extends AsyncTask<GetArticlesTask.Category, Void, P
         } catch (IOException e) {
             e.printStackTrace();
         }
-        new GetArticlesTask(delegate).execute(categories[0]);
 
         return null;
     }

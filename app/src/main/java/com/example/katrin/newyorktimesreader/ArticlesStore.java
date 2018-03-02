@@ -25,6 +25,12 @@ public class ArticlesStore implements GetArticlesTask.OnTaskResponse {
         new GetArticlesTask(this).execute(GetArticlesTask.Category.mostViewed);
     }
 
+    static void sync() {
+        new GetArticlesTask(ourInstance).execute(GetArticlesTask.Category.mostEmailed);
+        new GetArticlesTask(ourInstance).execute(GetArticlesTask.Category.mostShared);
+        new GetArticlesTask(ourInstance).execute(GetArticlesTask.Category.mostViewed);
+    }
+
     static List<Article> getEmailedList(ArticleRecycler recycler) {
         ourInstance.emailedRecycler = recycler;
         return ourInstance.emailedList;

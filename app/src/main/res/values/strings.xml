@@ -5,4 +5,5 @@
     <string name="fragment_three">Fragment Three</string>
     <string name="list_item_image_description">Image corresponded to the article</string>
     <string name="favorites">Favorites</string>
+    <string name="sync">sync</string>
 </resources>

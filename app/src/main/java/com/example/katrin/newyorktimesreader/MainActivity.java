@@ -45,6 +45,9 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, FavoritesActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.sync:
+                ArticlesStore.sync();
+                break;
             default:
                 return super.onOptionsItemSelected(item);
         }
