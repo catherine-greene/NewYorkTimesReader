@@ -71,7 +71,6 @@ public class ArticleRecycler extends RecyclerView.Adapter<ArticleRecycler.ViewHo
 
                 Intent intent = new Intent(view.getContext(), FullTextActivity.class);
                 intent.putExtra("article", article);
-//                intent.putExtra(FULL_TEXT_URL, article.getFullTextUrl());
                 context.startActivity(intent);
 
             }
