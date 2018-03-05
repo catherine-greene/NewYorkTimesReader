@@ -11,10 +11,6 @@ public class FavoritesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorites);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-
 
         ArticleRecycler recycler = new ArticleRecycler(this, ArticlesStore.getFavList(this));
         RecyclerView favRecycler = findViewById(R.id.fav_recycler);

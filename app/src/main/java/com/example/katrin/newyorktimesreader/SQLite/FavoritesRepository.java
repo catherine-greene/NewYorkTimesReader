@@ -34,7 +34,7 @@ public class FavoritesRepository implements Repository<Article, String> {
     public void delete(Article article) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.delete(DBContract.FavoritesTable.TABLE_NAME, DBContract.FavoritesTable._ID + " = ? ",
-                new String[]{article.getFullTextUrl()});
+                new String[]{article.fullTextUrl});
 
     }
 
@@ -42,8 +42,8 @@ public class FavoritesRepository implements Repository<Article, String> {
     public Article update(Article article) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.update(DBContract.FavoritesTable.TABLE_NAME, itemToContentValues(article),
-                DBContract.FavoritesTable._ID + " = ? ", new String[]{article.getFullTextUrl()});
-        return findById(article.getFullTextUrl());
+                DBContract.FavoritesTable._ID + " = ? ", new String[]{article.fullTextUrl});
+        return findById(article.fullTextUrl);
 
     }
 
@@ -76,12 +76,12 @@ public class FavoritesRepository implements Repository<Article, String> {
     @Override
     public ContentValues itemToContentValues(Article article) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(DBContract.FavoritesTable._ID, article.getFullTextUrl());
-        contentValues.put(DBContract.FavoritesTable.COLUMN_NAME_BYLINE, article.getByLine());
-        contentValues.put(DBContract.FavoritesTable.COLUMN_NAME_TITLE, article.getTitle());
-        contentValues.put(DBContract.FavoritesTable.COLUMN_NAME_ABSTRACT, article.getAbstractText());
-        contentValues.put(DBContract.FavoritesTable.COLUMN_NAME_PUBLISHED_DATE, article.getPublished_date());
-        contentValues.put(DBContract.FavoritesTable.COLUMN_NAME_IMAGE_URL, article.getImageUrl());
+        contentValues.put(DBContract.FavoritesTable._ID, article.fullTextUrl);
+        contentValues.put(DBContract.FavoritesTable.COLUMN_NAME_BYLINE, article.byLine);
+        contentValues.put(DBContract.FavoritesTable.COLUMN_NAME_TITLE, article.title);
+        contentValues.put(DBContract.FavoritesTable.COLUMN_NAME_ABSTRACT, article.abstractText);
+        contentValues.put(DBContract.FavoritesTable.COLUMN_NAME_PUBLISHED_DATE, article.published_date);
+        contentValues.put(DBContract.FavoritesTable.COLUMN_NAME_IMAGE_URL, article.imageUrl);
 
         return contentValues;
     }

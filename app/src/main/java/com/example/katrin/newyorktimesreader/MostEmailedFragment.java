@@ -17,21 +17,19 @@ public class MostEmailedFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        ArticleRecycler articleRecycler = new ArticleRecycler(GetArticlesTask.Category.mostEmailed, getContext());
-
         View view = inflater.inflate(R.layout.fragment_most_emailed, container, false);
+
+        ArticleRecycler articleRecycler = new ArticleRecycler(ArticlesStore.Category.mostEmailed, getContext());
         RecyclerView recyclerView = view.findViewById(R.id.most_emailed_recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(articleRecycler);
 
         return view;
     }
-
 }

@@ -23,9 +23,9 @@ public class MostSharedFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        ArticleRecycler articleRecycler = new ArticleRecycler(GetArticlesTask.Category.mostShared, getContext());
-
         View view = inflater.inflate(R.layout.fragment_most_shared, container, false);
+
+        ArticleRecycler articleRecycler = new ArticleRecycler(ArticlesStore.Category.mostShared, getContext());
         RecyclerView recyclerView = view.findViewById(R.id.most_shared_recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(articleRecycler);

@@ -16,11 +16,10 @@ import java.util.List;
 
 public class ArticleRecycler extends RecyclerView.Adapter<ArticleRecycler.ViewHolder> {
 
-    static final String FULL_TEXT_URL = "Full text url";
     private List<Article> articleList;
     private Context context;
 
-    ArticleRecycler(GetArticlesTask.Category category, Context context) {
+    ArticleRecycler(ArticlesStore.Category category, Context context) {
         switch (category) {
             case mostEmailed:
                 articleList = ArticlesStore.getEmailedList(this);
@@ -53,17 +52,17 @@ public class ArticleRecycler extends RecyclerView.Adapter<ArticleRecycler.ViewHo
 
         final Article article = articleList.get(position);
 
-        if (article.getImageUrl() == null) {
+        if (article.imageUrl == null) {
             holder.imageView.setVisibility(View.GONE);
         } else {
             Picasso.with(context)
-                    .load(article.getImageUrl())
+                    .load(article.imageUrl)
                     .into(holder.imageView);
         }
-        holder.title.setText(article.getTitle());
-        holder.byline.setText(article.getByLine());
-        holder.publishedDate.setText(article.getPublished_date());
-        holder.abstractText.setText(article.getAbstractText());
+        holder.title.setText(article.title);
+        holder.byline.setText(article.byLine);
+        holder.publishedDate.setText(article.published_date);
+        holder.abstractText.setText(article.abstractText);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

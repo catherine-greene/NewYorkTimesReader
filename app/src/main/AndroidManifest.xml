@@ -22,12 +22,8 @@
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".FullTextActivity"
-            android:parentActivityName=".MainActivity" />
-        <activity
-            android:name=".FavoritesActivity"
-            android:parentActivityName=".MainActivity" />
+        <activity android:name=".FullTextActivity" />
+        <activity android:name=".FavoritesActivity" />
     </application>
 
 </manifest>

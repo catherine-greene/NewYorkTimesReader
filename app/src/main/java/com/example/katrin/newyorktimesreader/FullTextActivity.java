@@ -19,19 +19,16 @@ public class FullTextActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_full_text);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
 
         WebView webView = findViewById(R.id.web_view);
         article = (Article) getIntent().getSerializableExtra("article");
         webView.setWebViewClient(new WebViewClient());
         webView.setClickable(false);
-        webView.loadUrl(article.getFullTextUrl());
+        webView.loadUrl(article.fullTextUrl);
 
         repository = new FavoritesRepository();
         repository.open(this);
-        if (repository.findById(article.getFullTextUrl()) != null) {
+        if (repository.findById(article.fullTextUrl) != null) {
             favCheck = true;
         }
         invalidateOptionsMenu();

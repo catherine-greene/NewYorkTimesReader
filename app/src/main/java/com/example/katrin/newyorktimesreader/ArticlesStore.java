@@ -1,15 +1,28 @@
 package com.example.katrin.newyorktimesreader;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import com.example.katrin.newyorktimesreader.SQLite.FavoritesRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ArticlesStore implements GetArticlesTask.OnTaskResponse {
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+class ArticlesStore {
 
     private static final ArticlesStore ourInstance = new ArticlesStore();
+    private static final String BASE_URL = "https://api.nytimes.com/svc/mostpopular/v2/";
+    private static final String API_KEY = "84360f4cbd464edb862b7d2199a79fac";
+    private static final String MOST_EMAILED = "mostemailed";
+    private static final String MOST_VIEWED = "mostviewed";
+    private static final String MOST_SHARED = "mostshared";
+
     private List<Article> favList = new ArrayList<>();
     private List<Article> emailedList = new ArrayList<>();
     private List<Article> sharedList = new ArrayList<>();
@@ -19,16 +32,18 @@ public class ArticlesStore implements GetArticlesTask.OnTaskResponse {
     private ArticleRecycler sharedRecycler;
     private ArticleRecycler viewedRecycler;
 
+
     private ArticlesStore() {
-        new GetArticlesTask(this).execute(GetArticlesTask.Category.mostEmailed);
-        new GetArticlesTask(this).execute(GetArticlesTask.Category.mostShared);
-        new GetArticlesTask(this).execute(GetArticlesTask.Category.mostViewed);
+
+        requestArticles(Category.mostEmailed);
+        requestArticles(Category.mostShared);
+        requestArticles(Category.mostViewed);
     }
 
     static void sync() {
-        new GetArticlesTask(ourInstance).execute(GetArticlesTask.Category.mostEmailed);
-        new GetArticlesTask(ourInstance).execute(GetArticlesTask.Category.mostShared);
-        new GetArticlesTask(ourInstance).execute(GetArticlesTask.Category.mostViewed);
+        ourInstance.requestArticles(Category.mostEmailed);
+        ourInstance.requestArticles(Category.mostShared);
+        ourInstance.requestArticles(Category.mostViewed);
     }
 
     static List<Article> getEmailedList(ArticleRecycler recycler) {
@@ -54,28 +69,83 @@ public class ArticlesStore implements GetArticlesTask.OnTaskResponse {
         return ourInstance.favList;
     }
 
-    @Override
-    public void createArticlesList(List<Article> articleList, GetArticlesTask.Category category) {
-
+    private void requestArticles(Category category) {
+        Call<Result> resultCall;
         switch (category) {
             case mostEmailed:
-                emailedList = articleList;
-                if (emailedRecycler != null) {
-                    emailedRecycler.updateArticleList(articleList);
-                }
+                resultCall = getMostPopularArticlesService().getMostPopular(MOST_EMAILED, API_KEY);
+                resultCall.enqueue(new Callback<Result>() {
+                    @Override
+                    public void onResponse(@NonNull Call<Result> call, @NonNull Response<Result> response) {
+                        Result result = response.body();
+                        if (result != null) {
+                            emailedList = result.articleList;
+                            if (emailedRecycler != null) {
+                                emailedRecycler.updateArticleList(emailedList);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<Result> call, @NonNull Throwable t) {
+                    }
+                });
                 break;
             case mostShared:
-                sharedList = articleList;
-                if (sharedRecycler != null) {
-                    sharedRecycler.updateArticleList(articleList);
-                }
+                resultCall = getMostPopularArticlesService().getMostPopular(MOST_SHARED, API_KEY);
+                resultCall.enqueue(new Callback<Result>() {
+                    @Override
+                    public void onResponse(@NonNull Call<Result> call, @NonNull Response<Result> response) {
+                        Result result = response.body();
+                        if (result != null) {
+                            sharedList = result.articleList;
+                            if (sharedRecycler != null) {
+                                sharedRecycler.updateArticleList(sharedList);
+                            }
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<Result> call, @NonNull Throwable t) {
+                    }
+                });
                 break;
             case mostViewed:
-                viewedList = articleList;
-                if (viewedRecycler != null) {
-                    viewedRecycler.updateArticleList(articleList);
-                }
-                break;
+                resultCall = getMostPopularArticlesService().getMostPopular(MOST_VIEWED, API_KEY);
+                resultCall.enqueue(new Callback<Result>() {
+                    @Override
+                    public void onResponse(@NonNull Call<Result> call, @NonNull Response<Result> response) {
+                        Result result = response.body();
+                        if (result != null) {
+                            viewedList = result.articleList;
+                            if (viewedRecycler != null) {
+                                viewedRecycler.updateArticleList(viewedList);
+                            }
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<Result> call, @NonNull Throwable t) {
+                    }
+                });
+
+
         }
+    }
+
+    private MostPopularArticlesService getMostPopularArticlesService() {
+        Retrofit retrofitClient = new Retrofit.Builder()
+                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(BASE_URL)
+                .build();
+
+
+        return retrofitClient.create(MostPopularArticlesService.class);
+    }
+
+    enum Category {
+        mostEmailed, mostShared, mostViewed
     }
 }

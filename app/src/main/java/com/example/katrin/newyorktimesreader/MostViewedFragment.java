@@ -22,9 +22,10 @@ public class MostViewedFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ArticleRecycler articleRecycler = new ArticleRecycler(GetArticlesTask.Category.mostViewed, getContext());
 
         View view = inflater.inflate(R.layout.fragment_most_viewed, container, false);
+
+        ArticleRecycler articleRecycler = new ArticleRecycler(ArticlesStore.Category.mostViewed, getContext());
         RecyclerView recyclerView = view.findViewById(R.id.most_viewed_recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(articleRecycler);
