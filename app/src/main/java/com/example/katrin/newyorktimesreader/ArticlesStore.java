@@ -8,6 +8,9 @@ import com.example.katrin.newyorktimesreader.SQLite.FavoritesRepository;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.subjects.BehaviorSubject;
+import io.reactivex.subjects.Subject;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -24,14 +27,17 @@ class ArticlesStore {
     private static final String MOST_SHARED = "mostshared";
 
     private List<Article> favList = new ArrayList<>();
-    private List<Article> emailedList = new ArrayList<>();
+
+    private Subject<List<Article>> emailedObservable = BehaviorSubject.create();
+    private Subject<List<Article>> sharedObservable = BehaviorSubject.create();
+    private Subject<List<Article>> viewedObservable = BehaviorSubject.create();
+
+    //    private List<Article> emailedList = new ArrayList<>();
+//    private ArticleRecycler emailedRecycler;
     private List<Article> sharedList = new ArrayList<>();
-    private List<Article> viewedList = new ArrayList<>();
-
-    private ArticleRecycler emailedRecycler;
     private ArticleRecycler sharedRecycler;
+    private List<Article> viewedList = new ArrayList<>();
     private ArticleRecycler viewedRecycler;
-
 
     private ArticlesStore() {
 
@@ -40,25 +46,21 @@ class ArticlesStore {
         requestArticles(Category.mostViewed);
     }
 
+    static Observable<List<Article>> getObservable(Category category) {
+        switch (category) {
+            case mostEmailed:
+                return ourInstance.emailedObservable;
+            case mostShared:
+                return ourInstance.sharedObservable;
+            default:
+                return ourInstance.viewedObservable;
+        }
+    }
+
     static void sync() {
         ourInstance.requestArticles(Category.mostEmailed);
         ourInstance.requestArticles(Category.mostShared);
         ourInstance.requestArticles(Category.mostViewed);
-    }
-
-    static List<Article> getEmailedList(ArticleRecycler recycler) {
-        ourInstance.emailedRecycler = recycler;
-        return ourInstance.emailedList;
-    }
-
-    static List<Article> getSharedList(ArticleRecycler recycler) {
-        ourInstance.sharedRecycler = recycler;
-        return ourInstance.sharedList;
-    }
-
-    static List<Article> getViewedList(ArticleRecycler recycler) {
-        ourInstance.viewedRecycler = recycler;
-        return ourInstance.viewedList;
     }
 
     static List<Article> getFavList(Context context) {
@@ -79,15 +81,13 @@ class ArticlesStore {
                     public void onResponse(@NonNull Call<Result> call, @NonNull Response<Result> response) {
                         Result result = response.body();
                         if (result != null) {
-                            emailedList = result.articleList;
-                            if (emailedRecycler != null) {
-                                emailedRecycler.updateArticleList(emailedList);
-                            }
+                            emailedObservable.onNext(result.articleList);
                         }
                     }
 
                     @Override
                     public void onFailure(@NonNull Call<Result> call, @NonNull Throwable t) {
+                        emailedObservable.onError(t);
                     }
                 });
                 break;
@@ -98,16 +98,14 @@ class ArticlesStore {
                     public void onResponse(@NonNull Call<Result> call, @NonNull Response<Result> response) {
                         Result result = response.body();
                         if (result != null) {
-                            sharedList = result.articleList;
-                            if (sharedRecycler != null) {
-                                sharedRecycler.updateArticleList(sharedList);
-                            }
+                            sharedObservable.onNext(result.articleList);
 
                         }
                     }
 
                     @Override
                     public void onFailure(@NonNull Call<Result> call, @NonNull Throwable t) {
+                        sharedObservable.onError(t);
                     }
                 });
                 break;
@@ -118,16 +116,13 @@ class ArticlesStore {
                     public void onResponse(@NonNull Call<Result> call, @NonNull Response<Result> response) {
                         Result result = response.body();
                         if (result != null) {
-                            viewedList = result.articleList;
-                            if (viewedRecycler != null) {
-                                viewedRecycler.updateArticleList(viewedList);
-                            }
-
+                            viewedObservable.onNext(result.articleList);
                         }
                     }
 
                     @Override
                     public void onFailure(@NonNull Call<Result> call, @NonNull Throwable t) {
+                        viewedObservable.onError(t);
                     }
                 });
 

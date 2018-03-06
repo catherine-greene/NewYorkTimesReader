@@ -23,9 +23,29 @@ public class MainActivity extends AppCompatActivity {
 
         final ViewPager viewPager = findViewById(R.id.pager);
         ViewPagerAdapter pagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        pagerAdapter.addFragment(new MostEmailedFragment(), "Most Emailed");
-        pagerAdapter.addFragment(new MostSharedFragment(), "Most Shared");
-        pagerAdapter.addFragment(new MostViewedFragment(), "Most Viewed");
+
+        {
+            Fragment fragment = new ArticleListFragment();
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("category", ArticlesStore.Category.mostEmailed);
+            fragment.setArguments(bundle);
+            pagerAdapter.addFragment(fragment, "Most Emailed");
+        }
+        {
+            Fragment fragment = new ArticleListFragment();
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("category", ArticlesStore.Category.mostShared);
+            fragment.setArguments(bundle);
+            pagerAdapter.addFragment(fragment, "Most Shared");
+        }
+        {
+            Fragment fragment = new ArticleListFragment();
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("category", ArticlesStore.Category.mostViewed);
+            fragment.setArguments(bundle);
+            pagerAdapter.addFragment(fragment, "Most Viewed");
+        }
+
         viewPager.setAdapter(pagerAdapter);
 
         TabLayout tabLayout = findViewById(R.id.tabs);

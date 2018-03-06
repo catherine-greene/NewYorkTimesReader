@@ -12,31 +12,21 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ArticleRecycler extends RecyclerView.Adapter<ArticleRecycler.ViewHolder> {
 
-    private List<Article> articleList;
+    private List<Article> articleList = new ArrayList<>();
     private Context context;
 
-    ArticleRecycler(ArticlesStore.Category category, Context context) {
-        switch (category) {
-            case mostEmailed:
-                articleList = ArticlesStore.getEmailedList(this);
-                break;
-            case mostShared:
-                articleList = ArticlesStore.getSharedList(this);
-                break;
-            case mostViewed:
-                articleList = ArticlesStore.getViewedList(this);
-                break;
-        }
+    ArticleRecycler(Context context) {
         this.context = context;
     }
 
     ArticleRecycler(Context context, List<Article> articleList) {
+        this(context);
         this.articleList = articleList;
-        this.context = context;
     }
 
 
