@@ -6,15 +6,22 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 public class FavoritesActivity extends AppCompatActivity {
+    ArticleRecycler recycler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorites);
 
-        ArticleRecycler recycler = new ArticleRecycler(this, ArticlesStore.getFavList(this));
+        recycler = new ArticleRecycler(this, null);
         RecyclerView favRecycler = findViewById(R.id.fav_recycler);
         favRecycler.setLayoutManager(new LinearLayoutManager(this));
         favRecycler.setAdapter(recycler);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        recycler.updateArticleList(ArticlesStore.getFavList(this));
     }
 }
